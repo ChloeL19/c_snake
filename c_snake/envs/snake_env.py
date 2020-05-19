@@ -1,6 +1,14 @@
 import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
+from c_snake.envs.snake import Controller, Discrete
+
+# import dependencies
+try:
+    import matplotlib.pyplot as plt
+    import matplotlib
+except ImportError as e:
+    raise error.DependencyNotInstalled("{}. (HINT: see matplotlib documentation for installation https://matplotlib.org/faq/installing_faq.html#installation".format(e))
 
 class SnakeEnv(gym.Env):
   """
@@ -37,13 +45,28 @@ class SnakeEnv(gym.Env):
       * both within the playing field
 
 
+  # I ended up just mainly using this code: https://github.com/grantsrb/Gym-Snake/blob/master/gym_snake/envs/snake/grid.py
+
+
   """
   metadata = {'render.modes': ['human']}
 
   def __init__(self):
-    pass
+    # set board specs
+    self.grid_size = [15, 15]
+    self.unit_size = 10 # what does this mean?
+    self.unit_gap = 1 # what does this mean?
+    self.snake_size = 3
+    self.n_snakes = 1 # restrict to single snake
+    self.n_foods = 1
+    self.viewer = None
+    self.action_space = Discrete(4)
+    self.random_init = True
+
   def step(self, action):
-    pass
+    self.last_obs, rewards, done, info = self.controller.step(action)
+    return self.last_obs, rewards, done, info
+    
   def reset(self):
     pass
   def render(self, mode='human'):
