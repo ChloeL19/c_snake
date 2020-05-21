@@ -62,6 +62,8 @@ class SnakeEnv(gym.Env):
     self.viewer = None
     self.action_space = Discrete(4)
     self.random_init = True
+    self.reset()
+    self.render()
 
   def step(self, action):
     self.last_obs, rewards, done, info = self.controller.step(action)
@@ -80,7 +82,7 @@ class SnakeEnv(gym.Env):
         #self.viewer.plot([0])
         plt.ion()
         self.fig.show()
-        plt.pause(10000) # if rendering an empty environment, just show an empty plot
+        #plt.pause(10000) # if rendering an empty environment, just show an empty plot
     else:
         self.viewer.clear()
         self.viewer.imshow(self.last_obs)
