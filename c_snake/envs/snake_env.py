@@ -77,8 +77,10 @@ class SnakeEnv(gym.Env):
     if self.viewer is None:
         self.fig = plt.figure()
         self.viewer = self.fig.add_subplot(111)
+        #self.viewer.plot([0])
         plt.ion()
         self.fig.show()
+        plt.pause(10000) # if rendering an empty environment, just show an empty plot
     else:
         self.viewer.clear()
         self.viewer.imshow(self.last_obs)
