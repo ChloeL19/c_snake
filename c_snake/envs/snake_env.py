@@ -5,8 +5,10 @@ from c_snake.envs.snake import Controller, Discrete
 
 # import dependencies
 try:
-    import matplotlib.pyplot as plt
+    import tkinter
     import matplotlib
+    import matplotlib.pyplot as plt
+    import matplotlib.animation as animation
 except ImportError as e:
     raise error.DependencyNotInstalled("{}. (HINT: see matplotlib documentation for installation https://matplotlib.org/faq/installing_faq.html#installation".format(e))
 
@@ -60,6 +62,7 @@ class SnakeEnv(gym.Env):
     self.n_snakes = 1 # restrict to single snake
     self.n_foods = 1
     self.viewer = None
+    self.camera = None
     self.action_space = Discrete(4)
     self.random_init = True
     self.reset()
@@ -75,18 +78,17 @@ class SnakeEnv(gym.Env):
     self.last_obs = self.controller.grid.grid.copy()
     return self.last_obs
 
-  def render(self, mode='human', close=False, frame_speed = 0.1):
+  def render(self, mode='human', close=False, frame_speed = 0.1, record=False):
     if self.viewer is None:
         self.fig = plt.figure()
         self.viewer = self.fig.add_subplot(111)
-        #self.viewer.plot([0])
         plt.ion()
         self.fig.show()
-        #plt.pause(10000) # if rendering an empty environment, just show an empty plot
     else:
         self.viewer.clear()
         self.viewer.imshow(self.last_obs)
         plt.pause(frame_speed)
+
     self.fig.canvas.draw()
     
   def close(self):
